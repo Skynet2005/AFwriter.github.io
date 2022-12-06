@@ -7,9 +7,24 @@
 </head>
 <body>
     <form>
-        <label>Performance Statement:</label>
-        <input type="text" id="performance-statement">
-        <input type="submit" value="Submit">
+        <fieldset>
+            <legend>Leadership & Primary Duties</legend>
+            <label>Performance Statement:</label>
+            <input type="text" id="leadership-primary-duties-statement">
+            <input type="submit" value="Submit">
+        </fieldset>
+        <fieldset>
+            <legend>Whole Airman Concept</legend>
+            <label>Performance Statement:</label>
+            <input type="text" id="whole-airman-concept-statement">
+            <input type="submit" value="Submit">
+        </fieldset>
+        <fieldset>
+            <legend>Rater/Additional Rater Comments</legend>
+            <label>Performance Statement:</label>
+            <input type="text" id="rater-additional-rater-comments-statement">
+            <input type="submit" value="Submit">
+        </fieldset>
     </form>
     <div id="categories">
         <div id="leadership-primary-duties">
@@ -25,20 +40,20 @@
             </ul>
         </div>
         <div id="rater-additional-rater-comments">
-            <h2>Rater/Additional Rater Comments</h2>
-            <ul id="statements-list">
-                <!-- Performance statements for this category will be added here dynamically using JavaScript -->
-            </ul>
+            <h2>Rater/Additional Rater
         </div>
-    </div>
-    <script src="script.js"></script>
+            
+<script src="script.js"></script>
 
   openai.init({
     application: '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'
 });
 
-  const input = document.getElementById('performance-statement');
-input.addEventListener('input', (event) => {
+ const input1 = document.getElementById('leadership-primary-duties-statement');
+const input2 = document.getElementById('whole-airman-concept-statement');
+const input3 = document.getElementById('rater-additional-rater-comments-statement');
+
+input1.addEventListener('input', (event) => {
     const statement = event.target.value;
 
     openai.prompt({
@@ -51,22 +66,46 @@ input.addEventListener('input', (event) => {
         presence_penalty: 0
     }).then((response) => {
         // Update the preview with the shortened performance statement
-        const preview = document.getElementById('preview');
+        const preview = document.getElementById('preview1');
         preview.innerHTML = response.choices[0].text;
     });
 });
 
-  const form = document.getElementById('performance-statement-form');
-form.addEventListener('submit', (event) => {
-    event.preventDefault();
-
-    const statement = document.getElementById('performance-statement').value;
-    const category = document.getElementById('category').value;
+input2.addEventListener('input', (event) => {
+    const statement = event.target.value;
 
     openai.prompt({
         model: 'text-davinci-002',
         prompt: statement,
-       
+        temperature: 0.5,
+        max_tokens: 115,
+        top_p: 1,
+        frequency_penalty: 0,
+        presence_penalty: 0
+    }).then((response) => {
+        // Update the preview with the shortened performance statement
+        const preview = document.getElementById('preview2');
+        preview.innerHTML = response.choices[0].text;
+    });
+});
 
+input3.addEventListener('input', (event) => {
+    const statement = event.target.value;
+
+    openai.prompt({
+        model: 'text-davinci-002',
+        prompt: statement,
+        temperature: 0.5,
+        max_tokens: 115,
+        top_p: 1,
+        frequency_penalty: 0,
+        presence_penalty: 0
+    }).then((response) => {
+        // Update the preview with the shortened performance statement
+        const preview = document.getElementById('preview3');
+        preview.innerHTML = response.choices[0].text;
+    });
+});
+            </script>
 </body>
 </html>
