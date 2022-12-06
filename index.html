@@ -1,36 +1,109 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Performance Statements</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/@openai/openai@latest/dist/openai.min.js"></script>
-</head>
-<body>
-    <form>
-        <label>Performance Statement:</label>
-        <input type="text" id="performance-statement">
-        <input type="submit" value="Submit">
-    </form>
-    <div id="categories">
-        <div id="leadership-primary-duties">
-            <h2>Leadership & Primary Duties</h2>
-            <ul id="statements-list">
-                <!-- Performance statements for this category will be added here dynamically using JavaScript -->
-            </ul>
-        </div>
-        <div id="whole-airman-concept">
-            <h2>Whole Airman Concept</h2>
-            <ul id="statements-list">
-                <!-- Performance statements for this category will be added here dynamically using JavaScript -->
-            </ul>
-        </div>
-        <div id="rater-additional-rater-comments">
-            <h2>Rater/Additional Rater Comments</h2>
-            <ul id="statements-list">
-                <!-- Performance statements for this category will be added here dynamically using JavaScript -->
-            </ul>
-        </div>
-    </div>
+<html> 
+<head> 
+  <title>Performance Statement Generator</title> 
+  <style> 
+    /* CSS styles for form and page layout */ 
+    body { 
+      font-family: sans-serif; 
+    } 
+    form { 
+      width: 400px; 
+      margin: 0 auto; 
+      padding: 20px; 
+      border: 1px solid #ccc; 
+      border-radius: 5px; 
+    } 
+    label { 
+      display: block; 
+      margin-bottom: 10px; 
+      font-weight: bold; 
+    } 
+    input[type="text"] { 
+      width: 100%; 
+      padding: 10px; 
+      margin-bottom: 20px; 
+      border: 1px solid #ccc; 
+      border-radius: 5px; 
+    } 
+    select { 
+      width: 100%; 
+      padding: 10px; 
+      margin-bottom: 20px; 
+      border: 1px solid #ccc; 
+      border-radius: 5px; 
+    } 
+    button[type="submit"] { 
+      background-color: #0072c6; 
+      color: #fff; 
+      padding: 10px; 
+      border: 0; 
+      border-radius: 5px; 
+      cursor: pointer; 
+    } 
+    #output { 
+      width: 400px; 
+      margin: 20px auto; 
+      padding: 20px; 
+      border: 1px solid #ccc; 
+      border-radius: 5px; 
+    } 
+  </style> 
+</head> 
 
-</body>
-</html>
+<body> 
+
+  <h1>Performance Statement Generator</h1> 
+  <form id="performance-form"> 
+    <label for="action">Action:</label><br> 
+    <input type="text" id="action" name="action"><br> 
+    <label for="impact">Impact:</label><br> 
+    <input type="text" id="impact" name="impact"><br> 
+    <label for="results">Results/Outcome:</label><br> 
+    <input type="text" id="results" name="results"><br> 
+    <label for="category">Category:</label><br> 
+    <select id="category" name="category"> 
+      <option value="leadership">Leadership & Primary Duties</option> 
+      <option value="airman">Whole Airman Concept</option> 
+      <option value="rater">Rater/Additional Rater comments</option> 
+    </select><br><br> 
+    <button type="submit">Generate Statement</button> 
+  </form> 
+
+    <div id="output"></div> 
+
+<script src="script.js">
+    openai.init({
+    application: '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'
+});
+const form = document.getElementById('performance-statement-form');
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const statement = document.getElementById('performance-statement').value;
+
+    openai.prompt({
+        model: 'text-davinci-002',
+        prompt: statement,
+        temperature: 0.5,
+        max_tokens: 115,
+        top_p: 1,
+        frequency_penalty: 0,
+        presence_penalty: 0
+    }).then((response) => {
+        // Add the shortened performance statement to the appropriate category
+        openai.complete({
+            model: 'text-davinci-002',
+            prompt: response.choices[0].text,
+            temperature: 0.5,
+            max_tokens: 20,
+            top_p: 1,
+            frequency_penalty: 0,
+            presence_penalty: 0
+        }).then((completion) => {
+            // Add the generated text to the appropriate category
+        });
+    });
+});
+    </script>
+
